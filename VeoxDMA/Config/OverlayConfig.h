@@ -66,7 +66,7 @@ public:
 	bool BattleMode = false;
 	int BattleModeKey = 0;           // index into Aim::KeyNames()
 	int MenuKey = 0;                 // 0=Insert, 1=Home, 2=Delete, 3=End, 4=F11, 5=F12, 6=Right Shift
-	bool PanicMode = false;          // true = immediately blank overlay & stop targeting
+	bool PanicMode = false;          // runtime only (not saved): true = blank overlay & stop targeting
 	int PanicKey = 0;                // 0=None, 1=End, 2=F8, 3=F9, 4=F10, 5=F11, 6=F12
 	D2D1::ColorF BackgroundColour = Colour(0, 0, 0);
 
@@ -112,7 +112,6 @@ public:
 		j[ConfigName][LIT("BattleMode")] = BattleMode;
 		j[ConfigName][LIT("BattleModeKey")] = BattleModeKey;
 		j[ConfigName][LIT("MenuKey")] = MenuKey;
-		j[ConfigName][LIT("PanicMode")] = PanicMode;
 		j[ConfigName][LIT("PanicKey")] = PanicKey;
 		j[ConfigName][LIT("FontName")] = FontName;
 		j[ConfigName][LIT("MenuWindow")] = MenuWindow.ToJson();
@@ -141,7 +140,8 @@ public:
 		BattleMode = s.value(LIT("BattleMode"), BattleMode);
 		BattleModeKey = s.value(LIT("BattleModeKey"), BattleModeKey);
 		MenuKey = s.value(LIT("MenuKey"), MenuKey);
-		PanicMode = s.value(LIT("PanicMode"), PanicMode);
+		// PanicMode is runtime-only: never restore it, or the overlay starts
+		// blank with no visible menu. Old configs may still contain the key.
 		PanicKey = s.value(LIT("PanicKey"), PanicKey);
 		FontName = s.value(LIT("FontName"), FontName);
 		if (s.contains(LIT("MenuWindow")))

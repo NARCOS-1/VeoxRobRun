@@ -2286,11 +2286,12 @@ void DrawSettings(bool attached, const std::string& statusText)
 		static const char* menuKeys[] = { "Insert", "Home", "Delete", "End", "F11", "F12", "Right Shift" };
 		ComboRow("Menu Key", &ConfigInstance.Overlay.MenuKey, menuKeys, IM_ARRAYSIZE(menuKeys));
 
-		ToggleRow("Panic Mode", &ConfigInstance.Overlay.PanicMode);
+		bool panic = Overlay::PanicActive();
+		if (ToggleRow("Panic Mode", &panic) && panic != Overlay::PanicActive())
+			Overlay::TogglePanic();
 		static const char* panicKeys[] = { "Off", "End", "F8", "F9", "F10", "F11", "F12" };
 		ComboRow("Panic Key", &ConfigInstance.Overlay.PanicKey, panicKeys, IM_ARRAYSIZE(panicKeys));
-		if (ConfigInstance.Overlay.PanicKey > 0)
-			Note("Pressing panic key instantly blanks the overlay and stops targeting.");
+		Note("Panic blanks the overlay and stops targeting. Press the panic key or the menu key to resume.");
 
 		ToggleRow("High Contrast Menu", &ConfigInstance.Overlay.HighContrastMenu);
 		Note("Solid card fills and brighter text, for bright game scenes.");

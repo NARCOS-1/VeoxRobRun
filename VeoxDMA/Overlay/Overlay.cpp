@@ -533,9 +533,11 @@ int Run(HINSTANCE instance, const wchar_t* title, const wchar_t* windowClass,
 
 		const int menuVk = GetMenuKeyVk();
 		if (KeyJustPressed(menuVk)) {
+
 			// Panic suppresses all drawing, including the menu. The menu key
 			// must always be a way back out, otherwise enabling panic from the
 			// menu (or with no panic key bound) leaves the user locked out.
+
 			if (ConfigInstance.Overlay.PanicMode) {
 				TogglePanic();
 				SetMenuOpen(true);
